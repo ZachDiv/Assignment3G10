@@ -15,6 +15,7 @@ public class Login {
         this.password = password;
     }
 
+    //eventually will be PatientManager instead of void return
     public void loginCheck() throws IOException {
         BufferedReader inputPatient = null, inputStaff = null;
         BufferedWriter outputPatient = null, outputStaff = null;
