@@ -1,8 +1,7 @@
 import java.io.IOException;
 import java.io.FileReader;
-import java.io.FileWriter;
+import java.util.Scanner;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 
 public class Login {
     String username;
@@ -10,15 +9,19 @@ public class Login {
     boolean patient = false;
     boolean staff = false;
 
-    public Login (String username, String password) {
-        this.username = username;
-        this.password = password;
+    public void login() throws IOException{
+        Scanner scnr = new Scanner(System.in);
+        System.out.println("Welcome! Please log in.");
+        do {
+            System.out.print("Username: ");
+            username = scnr.nextLine();
+            System.out.print("Password: ");
+            password = scnr.nextLine();
+        } while (!loginValidCheck(username, password));
     }
 
-    //eventually will be PatientManager instead of void return
-    public void loginCheck() throws IOException {
+    public boolean loginValidCheck(String username, String password) throws IOException {
         BufferedReader inputPatient = null, inputStaff = null;
-        BufferedWriter outputPatient = null, outputStaff = null;
         try {
             inputPatient = new BufferedReader(new FileReader("patient.csv"));
             inputStaff = new BufferedReader(new FileReader("medicalstaff.csv"));
@@ -28,7 +31,7 @@ public class Login {
                 String[] line = lp.split(",");
                 if (line[1].equals(username) && line[2].equals(password)) {
                     //need to make patient manager object here
-                    System.out.println("patient login successful");
+                    System.out.println("Successfully logged in as patient " + line[3]);
                     patient = true;
                 }
                 lp = inputPatient.readLine();
@@ -39,15 +42,13 @@ public class Login {
                 String[] line = ls.split(",");
                 if (line[1].equals(username) && line[2].equals(password)) {
                     //need to make patient manager object here
-                    System.out.println("staff login successful");
+                    System.out.println("Successfully logged in as staff member " + line[3]);
                     staff = true;
                 }
                 ls = inputPatient.readLine();
             }
 
-            if (!patient && !staff) {
-                System.out.println("invalid username or password, try again");
-            }
+
         } finally {
             if (inputPatient != null) {
                 inputPatient.close();
@@ -55,6 +56,14 @@ public class Login {
             if (inputStaff != null) {
                 inputStaff.close();
             }
+        }
+        if (patient || staff) {
+            return true;
+
+        }
+        else {
+            System.out.println("Invalid username or password");
+            return false;
         }
     }
 }
