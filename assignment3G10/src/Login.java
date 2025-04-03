@@ -1,15 +1,16 @@
-import java.io.IOException;
-import java.io.FileReader;
-import java.util.Scanner;
 import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Scanner;
 
 public class Login {
-    String username;
-    String password;
+    private String username;
+    private String password;
+    private PatientManager patientManager;
     boolean patient = false;
     boolean staff = false;
 
-    public void login() throws IOException{
+    public PatientManager login() throws IOException{
         Scanner scnr = new Scanner(System.in);
         System.out.println("Welcome! Please log in.");
         do {
@@ -18,6 +19,8 @@ public class Login {
             System.out.print("Password: ");
             password = scnr.nextLine();
         } while (!loginValidCheck(username, password));
+
+        return patientManager; 
     }
 
     public boolean loginValidCheck(String username, String password) throws IOException {
@@ -30,9 +33,9 @@ public class Login {
             while(lp != null) {
                 String[] line = lp.split(",");
                 if (line[1].equals(username) && line[2].equals(password)) {
-                    //need to make patient manager object here
                     System.out.println("Successfully logged in as patient " + line[3]);
                     patient = true;
+                    patientManager = new PatientManager(username, line[3]);
                 }
                 lp = inputPatient.readLine();
             }
@@ -50,17 +53,11 @@ public class Login {
 
 
         } finally {
-            if (inputPatient != null) {
-                inputPatient.close();
-            }
-            if (inputStaff != null) {
-                inputStaff.close();
-            }
+            if (inputPatient != null) {inputPatient.close();}
+            if (inputStaff != null) {inputStaff.close();}
         }
-        if (patient || staff) {
-            return true;
-
-        }
+        
+        if (patient || staff) {return true; }
         else {
             System.out.println("Invalid username or password");
             return false;
