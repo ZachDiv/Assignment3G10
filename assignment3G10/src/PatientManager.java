@@ -3,6 +3,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
 public class PatientManager {
     private ArrayList<Patient> patientList;
     private final String username;
@@ -26,14 +27,14 @@ public class PatientManager {
                 String[] data = line.split(",");
  
                 if (data.length >= 6) { 
-                    int ID = Integer.parseInt(data[0]);  // convert String to int
+                    int ID = Integer.parseInt(data[0]); 
                     String username = data[1];
                     String password = data[2];
                     String name = data[3];
                     String email = data[4];
                     String treatmentNotes = data[5];
 
-                    // Create Patient object and add to list
+                    // create patient object and add to list
                     patientList.add(new Patient(ID, username, password, name, email, treatmentNotes));
                 } else {
                     System.out.println("Skipping invalid line: " + line);
@@ -46,3 +47,31 @@ public class PatientManager {
             System.out.println("Error loading patients: " + e.getMessage());
         }
     }
+
+    public void viewPatientInfo(String username) {
+        Patient patient = getPatientByUsername(username);
+
+        if (patient == null) {
+            System.out.println("Patient not found.");
+            return;
+        }
+
+        // display current info 
+        System.out.println("\nYour Information:");
+        System.out.println(patient);
+    }
+
+    public Patient getPatientByUsername(String username) {
+        for (Patient p : patientList) {
+            if (p.getUsername().equals(username)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+}
+
