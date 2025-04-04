@@ -63,4 +63,8 @@ public class Login {
             return false;
         }
     }
+    
+    public boolean isPatient() {return patient;}   
+    public boolean isStaff() {return staff;}
+    
 }
