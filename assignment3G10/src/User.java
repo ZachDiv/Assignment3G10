@@ -29,4 +29,13 @@ public abstract class User {
     public String getUsername() {
         return username;
     }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getUsername() {
+        return username;
+    }
+    public String getName() {
+        return name;
+    }
 }
