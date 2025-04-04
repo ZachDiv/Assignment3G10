@@ -10,12 +10,16 @@ public class PatientManager {
     private ArrayList<Patient> patientList;
     private final String username;
     String name;
+    private Patient currentPatient;
 
     public PatientManager(String username, String name) {
         this.username = username;
         this.name = name;
         patientList = new ArrayList<>();
         loadPatients();
+        sortPatientsByID();
+        setCurrentPatientByUsername(username);
+        viewPatientInfo(username);
     }
 
     private void loadPatients() {
@@ -49,6 +53,20 @@ public class PatientManager {
         }
     }
 
+    public void sortPatientsByID() {
+        for (int i = 0; i < patientList.size() - 1; i++) {
+            for (int j = 0; j < patientList.size() - i - 1; j++) {
+                if (patientList.get(j).getID() > patientList.get(j + 1).getID()) {
+                    // swap the two patients
+                    Patient temp = patientList.get(j);
+                    patientList.set(j, patientList.get(j + 1));
+                    patientList.set(j + 1, temp);
+                }
+            }
+        }
+        System.out.println("Patients sorted by ID (ascending).");
+    }
+
     public void viewPatientInfo(String username) {
         Patient patient = getPatientByUsername(username);
 
@@ -73,6 +91,53 @@ public class PatientManager {
 
     public String getUsername() {
         return username;
+    }
+
+    public void searchPatientByIDAndSet() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter Patient ID to search: ");
+        int targetID;
+
+        try {
+            targetID = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid ID format.");
+            return;
+        }
+
+        int low = 0, high = patientList.size() - 1;
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            int midID = patientList.get(mid).getID();  // Ensure correct method to get ID
+
+            if (midID == targetID) {
+                currentPatient = patientList.get(mid);
+                System.out.println("Patient found: " + currentPatient.getName());
+                return;  // Exiting the method after finding the patient
+            } else if (midID < targetID) {
+                low = mid + 1;  // Narrowing the search range to the higher half
+            } else {
+                high = mid - 1;  // Narrowing the search range to the lower half
+            }
+        }
+
+        // Only reach here if no patient was found
+        System.out.println("Patient not found.");
+    }
+
+    public Patient getCurrentPatient() {
+        return currentPatient;
+    }
+
+    public void setCurrentPatientByUsername(String username) {
+
+        for (Patient p : patientList) {
+            if (p.getUsername().equals(username)) {
+                this.currentPatient = p;
+                return;
+            }
+        }
     }
 
     public void editPatientInfo(String username) {
@@ -183,4 +248,5 @@ public class PatientManager {
             }
         }
     }
+
 }
