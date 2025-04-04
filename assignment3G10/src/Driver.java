@@ -1,3 +1,4 @@
+
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -21,17 +22,33 @@ public class Driver {
                     }
                     break;
 
+                case 2:
+                    if (loginSystem.isPatient()) {
+                        try {
+                            throw new IllegalAccessException("Access Denied: Patients are not allowed to use this feature.");
+                        } catch (IllegalAccessException ex) {
+                            System.out.println(ex.getMessage());
+                        }
+                    } else if (loginSystem.isStaff() && patientManager != null) {
+                        patientManager.searchPatientByIDAndSet();
+                    }
+
+                    break;
+
                 case 3:
                     if (loginSystem.isPatient() && patientManager != null) {
                         patientManager.editPatientInfo(patientManager.getUsername());
                     }
 
-                    if(loginSystem.isStaff() && patientManager != null) {
+                    if (loginSystem.isStaff() && patientManager != null) {
                         patientManager.editAnyPatientInfo();
                     }
+                    break;
+
                 case 4:
                     System.out.println("Goodbye!");
                     return;
+
                 default:
                     throw new AssertionError();
             }
