@@ -44,27 +44,27 @@ public class Login {
             while(ls != null) {
                 String[] line = ls.split(",");
                 if (line[1].equals(username) && line[2].equals(password)) {
-                    //need to make patient manager object here
                     System.out.println("Successfully logged in as staff member " + line[3]);
                     staff = true;
+                    patientManager = new PatientManager(username, line[3]);
                 }
                 ls = inputPatient.readLine();
             }
-
 
         } finally {
             if (inputPatient != null) {inputPatient.close();}
             if (inputStaff != null) {inputStaff.close();}
         }
-        
+
         if (patient || staff) {return true; }
         else {
             System.out.println("Invalid username or password");
             return false;
         }
     }
-    
+
     public boolean isPatient() {return patient;}   
     public boolean isStaff() {return staff;}
-    
+
 }
+
