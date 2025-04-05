@@ -42,10 +42,10 @@ public class Report {
     public void sortEmail() {
         int n = patientList.size();
 
+        //sort
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < n - i - 1; j++) {
                 if (patientList.get(j).getEmail().compareToIgnoreCase(patientList.get(j + 1).getEmail()) > 0) {
-                    // swap
                     Patient temp = patientList.get(j);
                     patientList.set(j, patientList.get(j + 1));
                     patientList.set(j + 1, temp);
@@ -54,27 +54,27 @@ public class Report {
         }
 
         for (Patient p : patientList) {
-            System.out.println(p.getID() + " " + p.getName() + " " + p.getEmail());
+            System.out.println(p.getEmail());
         }
     }
 
     public String displayUserInfo(Login loginSystem, PatientManager patientManager) {
-    StringBuilder output = new StringBuilder();
+        StringBuilder output = new StringBuilder();
 
-    if (loginSystem.isPatient()) {
-        output.append("Logged in as a Patient.\n");
-        
-        output.append(patientManager.viewPatientInfo(patientManager.getUsername())).append("\n");
-    } else if (loginSystem.isStaff()) {
-        output.append("Logged in as Staff.\n");
-        
-        output.append(patientManager.viewPatientInfo(patientManager.getUsername())).append("\n");
-    } else {
-        output.append("User type not recognized.\n");
+        if (loginSystem.isPatient()) {
+            output.append("Logged in as a Patient.\n");
+
+            output.append(patientManager.viewPatientInfo(patientManager.getUsername())).append("\n");
+        } else if (loginSystem.isStaff()) {
+            output.append("Logged in as Staff.\n");
+
+            output.append(patientManager.viewPatientInfo(patientManager.getUsername())).append("\n");
+        } else {
+            output.append("User type not recognized.\n");
+        }
+
+        return output.toString();
     }
-
-    return output.toString();  
-}
 
     public void generateReport(Login loginSystem, PatientManager patientManager) {
         Scanner scanner = new Scanner(System.in);
@@ -84,7 +84,7 @@ public class Report {
         System.out.println("Select a report to generate:");
         System.out.println("1. List Patients by ID");
         System.out.println("2. List Patients by Name");
-        System.out.println("3. List Patients by Email");
+        System.out.println("3. List of Emails");
         System.out.println("4. Display User Info");
         System.out.print("Enter the number for the report: ");
         int reportChoice = scanner.nextInt();
@@ -105,7 +105,7 @@ public class Report {
                 break;
             case 3:
                 sortEmail();
-                saveToFile(filename);
+                saveEmailList(filename);
                 break;
             case 4:
                 userInfo = displayUserInfo(loginSystem, patientManager);
@@ -139,5 +139,15 @@ public class Report {
         }
     }
 
-}
+    private void saveEmailList(String filename) {
+        try (FileWriter writer = new FileWriter(filename)) {
+            for (Patient p : patientList) {
+                writer.write(p.getEmail() + "\n");  
+            }
 
+            System.out.println("Report has been saved to " + filename);
+        } catch (IOException e) {
+            System.out.println("An error occurred while saving the report: " + e.getMessage());
+        }
+    }
+}
