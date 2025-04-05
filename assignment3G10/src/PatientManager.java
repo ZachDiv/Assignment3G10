@@ -64,18 +64,17 @@ public class PatientManager {
     }
 
     public String viewPatientInfo(String username) {
-    Patient patient = getPatientByUsername(username);
-
-    if (patient == null) {
-        String message = "Patient not found.";
+    
+    if (currentPatient == null) {
+        String message = "No patient is currently selected.";
         System.out.println(message);  
-        return message;               
+        return message;
     }
 
-    String patientInfo = "\nYour Information:\n" + patient.toString();
+    String patientInfo = "\nCurrent Patient Information:\n" + currentPatient.toString();
     System.out.println(patientInfo);  
-    return patientInfo;   
-    }
+    return patientInfo;  
+}
 
     public Patient getPatientByUsername(String username) {
         for (Patient p : patientList) {
@@ -92,6 +91,7 @@ public class PatientManager {
 
     public void searchPatientByIDAndSet() {
         Scanner scanner = new Scanner(System.in);
+        sortPatientsByID();
         System.out.print("Enter Patient ID to search: ");
         int targetID;
 
@@ -106,12 +106,12 @@ public class PatientManager {
 
         while (low <= high) {
             int mid = (low + high) / 2;
-            int midID = patientList.get(mid).getID();  
+            int midID = patientList.get(mid).getID();
 
             if (midID == targetID) {
-                currentPatient = patientList.get(mid);
-                System.out.println("Patient found: " + currentPatient.getName());
-                return;  
+                currentPatient = patientList.get(mid);  
+                System.out.println("Patient Information:\n" + currentPatient);  
+                return;
             } else if (midID < targetID) {
                 low = mid + 1;  // higher half
             } else {
@@ -119,7 +119,7 @@ public class PatientManager {
             }
         }
 
-        System.out.println("Patient not found.");
+        System.out.println("Patient not found.");  // In case the patient is not found
     }
 
     public Patient getCurrentPatient() {
@@ -164,7 +164,7 @@ public class PatientManager {
                     String newPass = scnr.nextLine();
                     patient.setPassword(newPass);
                     break;
-                    
+
                 case 2:
                     System.out.print("Enter new name: ");
                     String newName = scnr.nextLine();
@@ -247,6 +247,7 @@ public class PatientManager {
             }
         }
     }
+
     public ArrayList<Patient> getPatientList() {
         return patientList;
     }
