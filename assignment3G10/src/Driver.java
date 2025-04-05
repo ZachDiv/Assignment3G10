@@ -12,7 +12,7 @@ public class Driver {
 
         System.out.println("Welcome to the dashboard, choose an option:");
         while (true) {
-            System.out.println("\n1 - View Patient Info, 2 - View/Lookup Patient, 3 - Edit Patient Info, 4 - Exit");
+            System.out.println("\n1 - View Patient Info, 2 - View/Lookup Patient, 3 - Edit Patient Info, 4 - Report Menu, 5 - Exit");
             choice = scnr.nextInt();
 
             switch (choice) {
@@ -46,6 +46,12 @@ public class Driver {
                     break;
 
                 case 4:
+                    Report report = new Report(patientManager.getPatientList());
+                    report.generateReport(loginSystem, patientManager);
+                    break;
+                    
+
+                case 5:
                     System.out.println("Goodbye!");
                     return;
 
