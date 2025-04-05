@@ -7,7 +7,8 @@ public class Driver {
     public static void main(String[] args) throws IOException {
         Scanner scnr = new Scanner(System.in);
         Login loginSystem = new Login();
-        int choice;
+        int choice;  
+        boolean isStaff = loginSystem.isStaff();
         PatientManager patientManager = loginSystem.login(); //gets instance of patientManager
 
         System.out.println("Welcome to the dashboard, choose an option:");
@@ -49,7 +50,6 @@ public class Driver {
                     Report report = new Report(patientManager.getPatientList());
                     report.generateReport(loginSystem, patientManager);
                     break;
-                    
 
                 case 5:
                     System.out.println("Goodbye!");
