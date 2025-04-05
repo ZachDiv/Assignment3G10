@@ -120,7 +120,7 @@ public class Report {
         try (FileWriter writer = new FileWriter(filename)) {
             // attribute group goes on new line
             for (Patient p : patientList) {
-                writer.write(p.getID() + " " + p.getName() + " " + p.getEmail() + "\n");
+                writer.write(p.getID() + ", " + p.getName() + ", " + p.getEmail() + "\n");
             }
 
             System.out.println("Report has been saved to " + filename);
