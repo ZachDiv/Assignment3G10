@@ -33,7 +33,8 @@ public class Login {
             while(lp != null) {
                 String[] line = lp.split(",");
                 if (line[1].equals(username) && line[2].equals(password)) {
-                    System.out.println("Successfully logged in as patient " + line[3]);
+                    //need to make patient manager object here
+                    System.out.println("Logged in as " + line[3] + " (Patient)");
                     patient = true;
                     patientManager = new PatientManager(username, line[3]);
                 }
@@ -44,7 +45,8 @@ public class Login {
             while(ls != null) {
                 String[] line = ls.split(",");
                 if (line[1].equals(username) && line[2].equals(password)) {
-                    System.out.println("Successfully logged in as staff member " + line[3]);
+                    //need to make patient manager object here
+                    System.out.println("Logged in as " + line[3] + " (Staff)");
                     staff = true;
                     patientManager = new PatientManager(username, line[3]);
                 }
@@ -67,4 +69,3 @@ public class Login {
     public boolean isStaff() {return staff;}
 
 }
-
