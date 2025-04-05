@@ -13,4 +13,8 @@ class Patient extends User {
     public void setTreatmentNotes(String treatmentNotes) {
         this.treatmentNotes = treatmentNotes;
     }
+
+    public String getTreatmentNotes() {
+        return treatmentNotes; 
+    }
 }
