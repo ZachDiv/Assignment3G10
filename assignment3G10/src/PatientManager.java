@@ -45,9 +45,6 @@ public class PatientManager {
                     System.out.println("Skipping invalid line: " + line);
                 }
             }
-
-            System.out.println("Loaded " + patientList.size() + " patients.");
-
         } catch (IOException e) {
             System.out.println("Error loading patients: " + e.getMessage());
         }
@@ -64,20 +61,20 @@ public class PatientManager {
                 }
             }
         }
-        System.out.println("Patients sorted by ID (ascending).");
     }
 
-    public void viewPatientInfo(String username) {
-        Patient patient = getPatientByUsername(username);
+    public String viewPatientInfo(String username) {
+    Patient patient = getPatientByUsername(username);
 
-        if (patient == null) {
-            System.out.println("Patient not found.");
-            return;
-        }
+    if (patient == null) {
+        String message = "Patient not found.";
+        System.out.println(message);  
+        return message;               
+    }
 
-        // display current info 
-        System.out.println("\nYour Information:");
-        System.out.println(patient);
+    String patientInfo = "\nYour Information:\n" + patient.toString();
+    System.out.println(patientInfo);  
+    return patientInfo;   
     }
 
     public Patient getPatientByUsername(String username) {
@@ -109,20 +106,19 @@ public class PatientManager {
 
         while (low <= high) {
             int mid = (low + high) / 2;
-            int midID = patientList.get(mid).getID();  // Ensure correct method to get ID
+            int midID = patientList.get(mid).getID();  
 
             if (midID == targetID) {
                 currentPatient = patientList.get(mid);
                 System.out.println("Patient found: " + currentPatient.getName());
-                return;  // Exiting the method after finding the patient
+                return;  
             } else if (midID < targetID) {
-                low = mid + 1;  // Narrowing the search range to the higher half
+                low = mid + 1;  // higher half
             } else {
-                high = mid - 1;  // Narrowing the search range to the lower half
+                high = mid - 1;  // lower half
             }
         }
 
-        // Only reach here if no patient was found
         System.out.println("Patient not found.");
     }
 
@@ -168,10 +164,13 @@ public class PatientManager {
                     String newPass = scnr.nextLine();
                     patient.setPassword(newPass);
                     break;
+                    
                 case 2:
                     System.out.print("Enter new name: ");
                     String newName = scnr.nextLine();
                     patient.setName(newName);
+                    break;
+
                 case 3:
                     System.out.print("Enter new email: ");
                     String newEmail = scnr.nextLine();
@@ -248,5 +247,7 @@ public class PatientManager {
             }
         }
     }
-
+    public ArrayList<Patient> getPatientList() {
+        return patientList;
+    }
 }
