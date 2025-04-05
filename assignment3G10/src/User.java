@@ -26,16 +26,19 @@ public abstract class User {
     public void setEmail(String email) {
         this.email = email;
     }
-    public String getUsername() {
-        return username;
-    }
     public void setName(String name) {
         this.name = name;
+    }
+    public String getUsername() {
+        return username;
     }
     public String getName() {
         return name;
     }
-    public int getID () {
+    public int getID() {
         return ID;
+    }
+    public String getEmail() {
+        return email;
     }
 }
